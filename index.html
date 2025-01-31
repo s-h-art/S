@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.H Art</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #FFD700;
+            --black: #000000;
+            --bg: #000000;
+            --text: #FFD700;
+            --card-bg: rgba(0, 0, 0, 0.8);
+        }
+
+        [data-theme="light"] {
+            --bg: #ffffff;
+            --text: #000000;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(45deg, var(--black), var(--gold));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 3rem;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            background: var(--text);
+            color: var(--bg);
+            cursor: pointer;
+            border: 2px solid var(--gold);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .art-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: var(--card-bg);
+        }
+
+        .art-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: transform 0.5s, filter 0.5s;
+        }
+
+        .art-card:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .art-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .art-card:hover .art-info {
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(45deg, var(--black), var(--gold));
+            color: var(--text);
+            margin-top: 2rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        footer a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Replace this with your logo image -->
+        <img src="logo.png" class="logo" alt="SH Art Logo">
+        <h1>S.H Art Gallery</h1>
+    </header>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+
+    <section class="gallery">
+        <div class="art-card">
+            <!-- Replace this with your Walter White image -->
+            <img src="walter-white.jpg" 
+                 alt="Walter White from Breaking Bad">
+            <div class="art-info">
+                <h3>Walter White</h3>
+                <p>Breaking Bad Character Portrait</p>
+            </div>
+        </div>
+
+        <div class="art-card">
+            <!-- Replace this with your Lounis image -->
+            <img src="lounis.jpg" 
+                 alt="Lounis Ait Manguellet">
+            <div class="art-info">
+                <h3>Lounis Ait Manguellet</h3>
+                <p>Portrait of the Famous Algerian Singer</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 S.H Art. All rights reserved.</p>
+        <p>Contact: <a href="mailto:S.H_art@outlook.com">S.H_art@outlook.com</a></p>
+        <p>Phone: <a href="tel:+213783339471">+213783339471</a></p>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.setAttribute('data-theme',
+                document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'
+            );
+            localStorage.setItem('theme', document.body.getAttribute('data-theme'));
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.gallery').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
