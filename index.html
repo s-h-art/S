@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>S.H Art</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --gold: #FFD700;
@@ -32,6 +33,62 @@
             background-color: var(--bg);
             color: var(--text);
             min-height: 100vh;
+        }
+
+        /* Sidebar Menu */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            cursor: pointer;
+            background: var(--text);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--bg);
+            margin: 4px 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: var(--card-bg);
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 50px;
+        }
+
+        .sidebar-menu li {
+            margin: 15px 0;
+        }
+
+        .sidebar-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .submenu {
+            display: none;
+            padding-left: 20px;
         }
 
         header {
@@ -67,6 +124,7 @@
             color: var(--bg);
             cursor: pointer;
             border: 2px solid var(--gold);
+            z-index: 1001;
         }
 
         .gallery {
@@ -123,24 +181,14 @@
             margin-top: 2rem;
         }
 
-        footer p {
-            margin: 0.5rem 0;
-            font-size: 1rem;
+        .social-links {
+            margin-top: 1rem;
         }
 
-        footer a {
+        .social-links a {
             color: var(--text);
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            margin: 0 10px;
+            font-size: 1.5rem;
         }
 
         .visible {
@@ -151,8 +199,29 @@
     </style>
 </head>
 <body>
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" onclick="toggleContact()"><i class="fas fa-envelope"></i> Contact Us ▼</a>
+                <ul class="submenu">
+                    <li>Email: <a href="mailto:S.H_art@outlook.com">S.H_art@outlook.com</a></li>
+                    <li>Phone: <a href="tel:+213783339471">+213783339471</a></li>
+                </ul>
+            </li>
+            <li class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=61557417475097" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://youtube.com/@houche.said" target="_blank"><i class="fab fa-youtube"></i></a>
+            </li>
+        </ul>
+    </nav>
+
     <header>
-        <!-- Replace this with your logo image -->
         <img src="logo.png" class="logo" alt="SH Art Logo">
         <h1>S.H Art Gallery</h1>
     </header>
@@ -161,9 +230,7 @@
 
     <section class="gallery">
         <div class="art-card">
-            <!-- Replace this with your Walter White image -->
-            <img src="walter-white.jpg" 
-                 alt="Walter White from Breaking Bad">
+            <img src="walter-white.jpg" alt="Walter White from Breaking Bad">
             <div class="art-info">
                 <h3>Walter White</h3>
                 <p>Breaking Bad Character Portrait</p>
@@ -171,9 +238,7 @@
         </div>
 
         <div class="art-card">
-            <!-- Replace this with your Lounis image -->
-            <img src="lounis.jpg" 
-                 alt="Lounis Ait Manguellet">
+            <img src="lounis.jpg" alt="Lounis Ait Manguellet">
             <div class="art-info">
                 <h3>Lounis Ait Manguellet</h3>
                 <p>Portrait of the Famous Algerian Singer</p>
@@ -183,8 +248,10 @@
 
     <footer>
         <p>&copy; 2025 S.H Art. All rights reserved.</p>
-        <p>Contact: <a href="mailto:S.H_art@outlook.com">S.H_art@outlook.com</a></p>
-        <p>Phone: <a href="tel:+213783339471">+213783339471</a></p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61557417475097" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://youtube.com/@houche.said" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
     </footer>
 
     <script>
@@ -194,6 +261,17 @@
                 document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'
             );
             localStorage.setItem('theme', document.body.getAttribute('data-theme'));
+        }
+
+        // Menu Toggle
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Contact Submenu Toggle
+        function toggleContact() {
+            document.querySelector('.submenu').style.display = 
+                document.querySelector('.submenu').style.display === 'block' ? 'none' : 'block';
         }
 
         // Load saved theme
@@ -210,6 +288,15 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.gallery').forEach(el => observer.observe(el));
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
