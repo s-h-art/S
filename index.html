@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.H Art</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --gold: #FFD700;
+            --black: #000000;
+            --bg: #000000;
+            --text: #FFD700;
+            --card-bg: rgba(0, 0, 0, 0.8);
+        }
+
+        [data-theme="light"] {
+            --bg: #ffffff;
+            --text: #000000;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.4s ease;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Sidebar Menu */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            cursor: pointer;
+            background: var(--text);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--bg);
+            margin: 4px 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: var(--card-bg);
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            margin-top: 50px;
+        }
+
+        .sidebar-menu li {
+            margin: 15px 0;
+        }
+
+        .sidebar-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .submenu {
+            display: none;
+            padding-left: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(45deg, var(--black), var(--gold));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+        }
+
+        h1 {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 3rem;
+            margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            background: var(--text);
+            color: var(--bg);
+            cursor: pointer;
+            border: 2px solid var(--gold);
+            z-index: 1001;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .art-card {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background: var(--card-bg);
+        }
+
+        .art-card img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: grayscale(20%);
+            transition: transform 0.5s, filter 0.5s;
+        }
+
+        .art-card:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .art-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            color: white;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .art-card:hover .art-info {
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(45deg, var(--black), var(--gold));
+            color: var(--text);
+            margin-top: 2rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--text);
+            margin: 0 10px;
+            font-size: 1.5rem;
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        .testimonials-section {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.testimonials-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: #5a4a42;
+    margin-bottom: 40px;
+    font-size: 2.5rem;
+    position: relative;
+}
+
+.testimonials-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background-color: #c7a17a;
+    margin: 15px auto;
+}
+
+.testimonials-container {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.testimonial-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+    transform: translateX(50px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testimonial-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.testimonial-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.testimonial-content::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    color: #c7a17a;
+    opacity: 0.2;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    line-height: 1;
+}
+
+.testimonial-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #5a4a42;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.client-name {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    color: #c7a17a;
+    font-size: 1.2rem;
+    margin-top: 15px;
+}
+
+.testimonial-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.nav-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #d4c7b9;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-dot:hover {
+    background-color: #c7a17a;
+}
+
+.nav-dot.active {
+    background-color: #5a4a42;
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .testimonials-container {
+        height: 400px;
+    }
+    
+    .testimonial-content {
+        padding: 20px;
+    }
+    
+    .testimonial-text {
+        font-size: 1rem;
+    }
+    </style>
+</head>
+<body>
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" onclick="toggleContact()"><i class="fas fa-envelope"></i> Contact Us ▼</a>
+                <ul class="submenu">
+                    <li><a href="mailto:S.H_art@outlook.com">Email</a></li>
+                    <li><a href="tel:+213783339471">Phone Number</a></li>
+                </ul>
+            </li>
+            <li class="social-links">
+                <a href="https://www.facebook.com/profile.php?id=61557417475097" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://youtube.com/@houche.said" target="_blank"><i class="fab fa-youtube"></i></a>
+            </li>
+        </ul>
+    </nav>
+
+    <header>
+        <img src="logo.png" class="logo" alt="SH Art Logo">
+        <h1>Saïd Houche</h1>
+        <h2>Gallerie d'arts</h2>
+    </header>
+
+    <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+
+    <section class="gallery">
+        <div class="art-card">
+            <img src="walter-white.jpg" alt="Walter White from Breaking Bad">
+            <div class="art-info">
+                <h3>Walter White</h3>
+                <p>Breaking Bad Character Portrait   18/01/2025</p>
+            </div>
+        </div>
+
+        <div class="art-card">
+            <img src="lounis.jpg" alt="Lounis Ait Manguellet">
+            <div class="art-info">
+                <h3>Lounis Ait Manguellet</h3>
+                <p>Portrait of the Famous Algerian Singer    29/01/2025</p>
+            </div>
+        </div>
+                <div class="art-card">
+            <img src="3d.jpg" alt="3D art">
+            <div class="art-info">
+                <h3>3D art</h3>
+                <p>3D wave art</p>
+                <p>30/10/2024</p>
+            </div>
+        </div>
+                </div>
+                <div class="art-card">
+            <img src="3d 2.jpg" alt="3D art">
+            <div class="art-info">
+                <h3>3D art 2</h3>
+                <p>3D wave art</p>
+                <p>01/11/2024</p>
+            </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="afzim.jpg" alt="Afzim">
+            <div class="art-info">
+                <h3>Afzim</h3>
+                <p>Bijoux Kabyles Sur Mur</p>
+                 <p>25/01/2024</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="afzim2.jpg" alt="Afzim">
+            <div class="art-info">
+                <h3>Afzim 2</h3>
+                <p>Bijoux Kabyles Sur Papier</p>
+                 <p>25/01/2024</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="matoub.jpg" alt="Matoub">
+            <div class="art-info">
+                <h3>Matoub Lounes</h3>
+                <p>Artiste Chanteur Kabyle</p>
+                 <p>09/01/2023</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="mouloud.jpg" alt="Mouloud">
+            <div class="art-info">
+                <h3>Mouloud Mammeri</h3>
+                <p>Auteur Kabyle</p>
+                 <p>10/01/2023</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="pomme.jpg" alt="pomme">
+            <div class="art-info">
+                <h3>Pomme en 3d</h3>
+                <p>Dessin 3d en crayon</p>
+                 <p>20/05/2023</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="itij.jpg" alt="sun">
+            <div class="art-info">
+                <h3>Wold</h3>
+                <p>Dessin d'un loup</p>
+                 <p>11/06/2022</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="mibra.png" alt="mibra">
+            <div class="art-info">
+                <h3>sharpener</h3>
+                <p>Dessin en 3d</p>
+                 <p>04/08/2023</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="tit.jpg" alt="eye">
+            <div class="art-info">
+                <h3>Eye</h3>
+                <p>Dessin en 3d</p>
+                 <p>09/09/2024</p>
+            </div>
+        </div>
+        </div>
+            </div>
+                </div>
+                <div class="art-card">
+            <img src="hi.jpg" alt="3d">
+            <div class="art-info">
+                <h3>3d waves art</h3>
+                <p>Dessin 3d</p>
+                 <p>24/05/2023</p>
+            </div>
+        </div>
+    </section>
+    <section class="testimonials-section">
+        <h2>Our Clients</h2>
+        <div class="testimonials-container">
+            <div class="testimonial-slide active">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"Working with S.H Art has been an exceptional experience. Their attention to detail and artistic vision transformed our space into a masterpiece. The professionalism and creativity exceeded all our expectations."</p>
+                    <p class="client-name">Karim</p>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"The team at S.H Art demonstrated remarkable skill and dedication. Their ability to understand and execute our vision was impressive. The final result was nothing short of spectacular."</p>
+                    <p class="client-name">Anonymous</p>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"I was thoroughly impressed by S.H Art's professionalism and artistic expertise. They delivered a flawless project on time and within budget. Their work has received countless compliments from our visitors."</p>
+                    <p class="client-name">Amina</p>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"S.H Art's creative solutions elevated our brand's aesthetic to new heights. Their team's innovative approach and technical mastery resulted in a stunning visual presentation that perfectly represents our values."</p>
+                    <p class="client-name">Anonymous</p>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"From concept to completion, S.H Art demonstrated unparalleled professionalism. Their ability to blend traditional techniques with contemporary design created a truly unique and captivating result."</p>
+                    <p class="client-name">Youssef</p>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"The artistic team at S.H Art transformed our vision into reality with remarkable precision. Their attention to detail and commitment to excellence was evident in every aspect of the project."</p>
+                    <p class="client-name">Leila</p>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"S.H Art exceeded our expectations in every way. Their creative direction and technical execution resulted in a breathtaking installation that has become the centerpiece of our facility."</p>
+                    <p class="client-name">Anonymous</p>
+                </div>
+            </div>
+            <div class="testimonial-slide">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"Working with S.H Art was a pleasure from start to finish. Their professional approach, combined with extraordinary talent, delivered results that have significantly enhanced our corporate environment."</p>
+                    <p class="client-name">Samir</p>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-nav">
+            <button class="nav-dot active" data-index="0"></button>
+            <button class="nav-dot" data-index="1"></button>
+            <button class="nav-dot" data-index="2"></button>
+            <button class="nav-dot" data-index="3"></button>
+            <button class="nav-dot" data-index="4"></button>
+            <button class="nav-dot" data-index="5"></button>
+            <button class="nav-dot" data-index="6"></button>
+            <button class="nav-dot" data-index="7"></button>
+        </div>
+    </section>
+    <script src="testimonials.js"></script>
+    <footer>
+        <h1><a href="https://s-h-art.github.io/About">About Us</a></h1>
+        <p>&copy; 2025 S.H Art. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61557417475097" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://youtube.com/@houche.said" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.setAttribute('data-theme',
+                document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light'
+            );
+            localStorage.setItem('theme', document.body.getAttribute('data-theme'));
+        }
+
+        // Menu Toggle
+        function toggleMenu() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Contact Submenu Toggle
+        function toggleContact() {
+            document.querySelector('.submenu').style.display = 
+                document.querySelector('.submenu').style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.setAttribute('data-theme', savedTheme);
+
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.gallery').forEach(el => observer.observe(el));
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (!sidebar.contains(event.target) && !menuBtn.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const dots = document.querySelectorAll('.nav-dot');
+    let currentSlide = 0;
+    let slideInterval;
+    const slideDuration = 5000; // 5 seconds
+    
+    // Initialize the slider
+    function initSlider() {
+        if (slides.length === 0) return;
+        
+        // Show first slide
+        slides[0].classList.add('active');
+        dots[0].classList.add('active');
+        
+        // Start autoplay
+        startSlideShow();
+        
+        // Add event listeners for dots
+        dots.forEach(dot => {
+            dot.addEventListener('click', function() {
+                const slideIndex = parseInt(this.getAttribute('data-index'));
+                goToSlide(slideIndex);
+                resetSlideShow();
+            });
+        });
+    }
+    
+    // Go to specific slide
+    function goToSlide(index) {
+        // Exit if already on this slide or invalid index
+        if (currentSlide === index || index < 0 || index >= slides.length) return;
+        
+        // Update current slide
+        const previousSlide = currentSlide;
+        currentSlide = index;
+        
+        // Animate slides
+        slides[previousSlide].classList.remove('active');
+        slides[currentSlide].classList.add('active');
+        
+        // Update dots
+        dots[previousSlide].classList.remove('active');
+        dots[currentSlide].classList.add('active');
+    }
+    
+    // Go to next slide
+    function nextSlide() {
+        const nextIndex = (currentSlide + 1) % slides.length;
+        goToSlide(nextIndex);
+    }
+    
+    // Start slideshow
+    function startSlideShow() {
+        slideInterval = setInterval(nextSlide, slideDuration);
+    }
+    
+    // Reset slideshow timer
+    function resetSlideShow() {
+        clearInterval(slideInterval);
+        startSlideShow();
+    }
+    
+    // Initialize the slider
+    initSlider();
+    
+    // Pause on hover
+    const container = document.querySelector('.testimonials-container');
+    if (container) {
+        container.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            resetSlideShow();
+        });
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            const prevIndex = (currentSlide - 1 + slides.length) % slides.length;
+            goToSlide(prevIndex);
+            resetSlideShow();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+            resetSlideShow();
+        }
+    });
+});
+    </script>
+</body>
+</html>
